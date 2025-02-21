@@ -28,7 +28,7 @@ Cloud Deployment
 
 ## Live Demo
 
-🚀 Hosted on Vercel: (https://res-analysis.vercel.app/)
+🚀 Hosted on Vercel: https://res-analysis.vercel.app/
 
 ## Tech Stack
 
