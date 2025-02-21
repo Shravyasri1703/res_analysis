@@ -48,25 +48,24 @@ Please extract as much information as possible from the text. If a field is uncl
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();
     
-    // Improved parsing logic
+    
     try {
-      // Try to extract JSON from various formats
+
       let jsonText = responseText;
       
-      // Remove markdown code blocks if present
       const jsonRegex = /```(?:json)?\s*(\{[\s\S]*?\})\s*```/;
       const match = responseText.match(jsonRegex);
       if (match) {
         jsonText = match[1];
       } else {
-        // Try to find just a JSON object anywhere in the text
+       
         const objectMatch = responseText.match(/(\{[\s\S]*\})/);
         if (objectMatch) {
           jsonText = objectMatch[1];
         }
       }
       
-      // Clean up the JSON string
+      
       jsonText = jsonText.trim()
         .replace(/[\u201C\u201D]/g, '"') // Replace curly quotes
         .replace(/'/g, '"')              // Replace single quotes with double quotes
@@ -74,7 +73,7 @@ Please extract as much information as possible from the text. If a field is uncl
         .replace(/,\s*}/g, '}')          // Remove trailing commas
         .replace(/,\s*]/g, ']');         // Remove trailing commas in arrays
       
-      // Attempt to parse with additional error handling
+      
       let parsedData;
       try {
         parsedData = JSON.parse(jsonText);
@@ -82,7 +81,7 @@ Please extract as much information as possible from the text. If a field is uncl
         console.log("Initial parsing failed, attempting cleanup:", initialError.message);
         console.log("Problematic JSON:", jsonText);
         
-        // Last resort: try to manually rebuild the JSON
+
         const nameMatch = jsonText.match(/"name"\s*:\s*"([^"]+)"/);
         const emailMatch = jsonText.match(/"email"\s*:\s*"([^"]+)"/);
         
@@ -105,7 +104,7 @@ Please extract as much information as possible from the text. If a field is uncl
           summary: "Not specified"
         };
         
-        // Try to extract other fields if possible
+        
         try {
           const educationMatch = jsonText.match(/"education"\s*:\s*(\{[^}]+\})/);
           if (educationMatch) {
@@ -121,7 +120,7 @@ Please extract as much information as possible from the text. If a field is uncl
           console.log("Failed to parse education");
         }
         
-        // Extract skills array if possible
+        
         try {
           const skillsMatch = jsonText.match(/"skills"\s*:\s*(\[[^\]]+\])/);
           if (skillsMatch) {
@@ -133,14 +132,14 @@ Please extract as much information as possible from the text. If a field is uncl
           console.log("Failed to parse skills");
         }
         
-        // Extract summary if possible
+        
         const summaryMatch = jsonText.match(/"summary"\s*:\s*"([^"]+)"/);
         if (summaryMatch) {
           parsedData.summary = summaryMatch[1];
         }
       }
       
-      // Validate the parsed data structure
+    
       if (!parsedData.name) parsedData.name = "Not specified";
       if (!parsedData.email) parsedData.email = "Not specified";
 

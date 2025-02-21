@@ -71,7 +71,7 @@ const applicantSchema = new mongoose.Schema({
   }
 });
 
-// Add a text index for better searching capabilities
+
 applicantSchema.index({ name: 'text' });
 
 export default mongoose.model('Applicant', applicantSchema);
